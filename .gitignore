@@ -1,0 +1,5 @@
+.vscode
+blog/__pycache__
+blog_app/__pycache__
+env/
+blog_app/migrations/__pycache__
