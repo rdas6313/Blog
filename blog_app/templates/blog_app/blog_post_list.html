@@ -5,12 +5,10 @@
         <div class="row">
             
             <!--Blog post-->
-            {% include 'blog_app/blog_post.html' %}
-            {% include 'blog_app/blog_post.html' %}
-            {% include 'blog_app/blog_post.html' %}
-            {% include 'blog_app/blog_post.html' %}
-            {% include 'blog_app/blog_post.html' %}
-            {% include 'blog_app/blog_post.html' %}
+            {% for post in posts %}
+                {% include 'blog_app/blog_post.html' %}
+            {% endfor %}
+           
 
             <!--Pagination-->
             <div class="col-12">
