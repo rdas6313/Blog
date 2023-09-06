@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 def index(request):
-    queryset = Post.objects.select_related("author").all()
+    queryset = Post.objects.select_related("author").all().order_by('-date')
     context = {
         "posts": queryset
     }
