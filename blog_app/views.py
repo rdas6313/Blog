@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from .models import Post, Tag
 
 # Create your views here.
@@ -15,8 +16,12 @@ def index(request):
 
     tags_queryset = Tag.objects.filter(post__in=posts_queryset).distinct()
 
+    paginator = Paginator(posts_queryset, 6)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        "posts": list(posts_queryset),
+        "posts": page_obj,
         "latest_post": posts_queryset[:6],
         "latest_tags": tags_queryset
     }
