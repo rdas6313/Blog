@@ -9,7 +9,8 @@ from datetime import datetime
 def index(request):
     queryset = Post.objects.select_related("author").all().order_by('-date')
     context = {
-        "posts": queryset
+        "posts": queryset,
+        "latest_post": queryset[:6]
     }
     return render(request, 'blog_app/blog_post_list.html', context)
 

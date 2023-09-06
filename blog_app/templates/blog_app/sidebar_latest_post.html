@@ -4,28 +4,30 @@
     </div>
     <div class="widget-body">
 
+        {% for post in latest_post %}
         <!--single latest post-->
-        <div class="latest-post-aside media">
-            <div class="lpa-left media-body">
-                <div class="lpa-title">
-                    <h5><a href="#">Prevent 75% of visitors from google analytics</a></h5>
+            <div class="latest-post-aside media">
+                <div class="lpa-left media-body">
+                    <div class="lpa-title">
+                        <h5><a href="{% url 'post_detail' post.id %}">{{ post.title|title }}</a></h5>
+                    </div>
+                    <div class="lpa-meta">
+                        <a class="name" href="#">
+                           {{ post.author.name }}
+                        </a>
+                        <a class="date">
+                            {{ post.date|date:"d M Y" }}
+                        </a>
+                    </div>
                 </div>
-                <div class="lpa-meta">
-                    <a class="name" href="#">
-                        Rachel Roth
-                    </a>
-                    <a class="date" href="#">
-                        26 FEB 2020
+                <div class="lpa-right">
+                    <a href="#">
+                        <img src="https://www.bootdey.com/image/400x200/E6E6FA/000000" title alt>
                     </a>
                 </div>
             </div>
-            <div class="lpa-right">
-                <a href="#">
-                    <img src="https://www.bootdey.com/image/400x200/E6E6FA/000000" title alt>
-                </a>
-            </div>
-        </div>
 
+        {% endfor %}
 
     </div>
 </div>
