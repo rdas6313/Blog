@@ -1,16 +1,24 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseServerError
-from .models import Author, Post
-from django.db.models import F, Count, Max
-from datetime import datetime
+from .models import Post, Tag
+
 # Create your views here.
 
 
 def index(request):
-    queryset = Post.objects.select_related("author").all().order_by('-date')
+    """ This function is responsible for index page """
+    posts_queryset = Post \
+        .objects \
+        .select_related(
+            "author") \
+        .all() \
+        .order_by('-date')
+
+    tags_queryset = Tag.objects.filter(post__in=posts_queryset).distinct()
+
     context = {
-        "posts": queryset,
-        "latest_post": queryset[:6]
+        "posts": list(posts_queryset),
+        "latest_post": posts_queryset[:6],
+        "latest_tags": tags_queryset
     }
     return render(request, 'blog_app/blog_post_list.html', context)
 

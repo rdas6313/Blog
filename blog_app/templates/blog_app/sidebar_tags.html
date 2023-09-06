@@ -4,13 +4,10 @@
     </div>
     <div class="widget-body">
         <div class="nav tag-cloud">
-            <a href="#">Design</a>
-            <a href="#">Development</a>
-            <a href="#">Travel</a>
-            <a href="#">Web Design</a>
-            <a href="#">Marketing</a>
-            <a href="#">Research</a>
-            <a href="#">Managment</a>
+            {% for tag in latest_tags %}
+                <a href="#">{{ tag.label|capfirst }}</a>
+            {% endfor %}
+            
         </div>
     </div>
 </div>
