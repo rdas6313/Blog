@@ -23,16 +23,24 @@ def index(request):
     context = {
         "posts": page_obj,
         "latest_post": posts_queryset[:6],
-        "latest_tags": tags_queryset
+        "tags": tags_queryset
     }
     return render(request, 'blog_app/blog_post_list.html', context)
 
 
 def author_detail(request, id):
     """ This function is responsible for author detail page """
-    author_queryset = Author.objects.all()
-    author = get_object_or_404(author_queryset, pk=id)
-    author_post_queryset = author.post_set.all()
+
+    author = get_object_or_404(Author, pk=id)
+    author_post_queryset = author.post_set.prefetch_related(
+        'tag_set').order_by('-date')
+
+    tag_list = []
+    for post in author_post_queryset:
+        for tag in post.tag_set.all():
+            tag_list.append(tag)
+
+    tags = set(tag_list)
 
     paginator = Paginator(author_post_queryset, 6)
     page_number = request.GET.get('page', 1)
@@ -40,7 +48,9 @@ def author_detail(request, id):
 
     context = {
         "posts": page_obj,
-        "author": author
+        "author": author,
+        "tag_title": "Tags",
+        "tags": tags
     }
     return render(request, 'blog_app/blog_author_detail.html', context)
 

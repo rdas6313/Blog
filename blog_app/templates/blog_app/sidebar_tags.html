@@ -1,10 +1,14 @@
 <div class="widget widget-tags">
     <div class="widget-title">
-        <h3>Latest Tags</h3>
+        {% if tag_title %}
+            <h3>{{ tag_title|title }}</h3>
+        {% else %}
+            <h3>Latest Tags</h3>
+        {% endif %}
     </div>
     <div class="widget-body">
         <div class="nav tag-cloud">
-            {% for tag in latest_tags %}
+            {% for tag in tags %}
                 <a href="#">{{ tag.label|capfirst }}</a>
             {% endfor %}
             
