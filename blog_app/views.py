@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from .models import Post, Tag
+from .models import Post, Tag, Author
 
 # Create your views here.
 
@@ -26,6 +26,23 @@ def index(request):
         "latest_tags": tags_queryset
     }
     return render(request, 'blog_app/blog_post_list.html', context)
+
+
+def author_detail(request, id):
+    """ This function is responsible for author detail page """
+    author_queryset = Author.objects.all()
+    author = get_object_or_404(author_queryset, pk=id)
+    author_post_queryset = author.post_set.all()
+
+    paginator = Paginator(author_post_queryset, 6)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "posts": page_obj,
+        "author": author
+    }
+    return render(request, 'blog_app/blog_author_detail.html', context)
 
 
 def detail(request, id):

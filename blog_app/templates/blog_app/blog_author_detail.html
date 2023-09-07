@@ -1,0 +1,12 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+    {% include 'blog_app/post_list.html' %}
+{% endblock %}
+
+{% block sidebar %}
+    <div class="col-lg-4 m-15px-tb blog-aside">
+        {% include 'blog_app/sidebar_author.html' %}
+        
+    </div>
+{% endblock %}
