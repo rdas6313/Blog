@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Post, Tag, Author
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 # Create your views here.
 
 
@@ -39,16 +39,18 @@ def index(request):
 def author_detail(request, id):
     """ This function is responsible for author detail page """
 
+    selected_tag_list = request.GET.getlist('list_params[]')
+
     author = get_object_or_404(Author, pk=id)
-    author_post_queryset = author.post_set.prefetch_related(
-        'tag_set').order_by('-date')
 
-    tag_list = []
-    for post in author_post_queryset:
-        for tag in post.tag_set.all():
-            tag_list.append(tag)
+    author_post_queryset = author.post_set.filter(
+        tag__isnull=False).distinct().order_by('-date')
 
-    tags = set(tag_list)
+    if selected_tag_list:
+        author_post_queryset = author_post_queryset.filter(
+            tag__in=selected_tag_list).distinct()
+
+    tags = Tag.objects.filter(post__author=author).distinct()
 
     paginator = Paginator(author_post_queryset, 6)
     page_number = request.GET.get('page', 1)
