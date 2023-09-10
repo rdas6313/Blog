@@ -27,11 +27,12 @@ def index(request):
     paginator = Paginator(posts_queryset, 6)
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
-
+    selected_tag_list = [int(i) for i in selected_tag_list]
     context = {
         "posts": page_obj,
         "latest_post": latest_post_queryset[:6],
-        "tags": tag_queryset
+        "tags": tag_queryset,
+        "selected_tags": selected_tag_list
     }
     return render(request, 'blog_app/blog_post_list.html', context)
 
@@ -56,11 +57,14 @@ def author_detail(request, id):
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
+    selected_tag_list = [int(i) for i in selected_tag_list]
+
     context = {
         "posts": page_obj,
         "author": author,
         "tag_title": "Tags",
-        "tags": tags
+        "tags": tags,
+        "selected_tags": selected_tag_list
     }
     return render(request, 'blog_app/blog_author_detail.html', context)
 

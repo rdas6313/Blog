@@ -9,7 +9,11 @@
     <div class="widget-body">
         <div class="nav tag-cloud">
             {% for tag in tags %}
-                <a href="" id="{{ tag.id }}" class="tags" onclick="return tag_click({{ tag.id }})" data-mark="false">{{ tag.label|capfirst }}</a>
+                {% if tag.id in selected_tags %}
+                    <a href="#" id="{{ tag.id }}" class="tags" onclick="return tag_click({{ tag.id }})" data-mark="true" style="background:#fc5356" >{{ tag.label|capfirst }}</a>
+                {% else %}
+                    <a href="#" id="{{ tag.id }}" class="tags" onclick="return tag_click({{ tag.id }})" data-mark="false">{{ tag.label|capfirst }}</a>
+                {% endif %}
             {% endfor %}
             
         </div>
