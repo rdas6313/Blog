@@ -500,7 +500,6 @@
   <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript">
-
     function toggle(id) {
 
       const blue = "#20247b";
@@ -519,29 +518,26 @@
 
     function tag_click(id) {
 
-      // if (document.getElementById(id).getAttribute("data-mark") == 'true') {
-      //   toggle(id);
-      //   return;
-      // }
-
       if (!window.location) {
-        console.log("Can't create search params.");
+        console.error("Can't create search params.");
         return;
       }
 
       toggle(id);
 
-      const url = new URL(window.location.href);
+      let url = "?";
       const elements = document.getElementsByClassName("tags");
       for (let index = 0; index < elements.length; index++) {
         if (elements[index].getAttribute("data-mark") == "true") {
-          url.searchParams.append("list_params[]", elements[index].id);
+          if (url.length > 1)
+            url += '&';
+          url += 'list_params[]=' + elements[index].id;
         }
 
       }
 
-      window.location.href = url;
-
+      document.getElementById(id).href = url;
+      return false;
 
     }
   </script>
