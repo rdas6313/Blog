@@ -5,12 +5,12 @@
                 <span>{{ post.date|date:"d" }}</span>
                 <label>{{ post.date|date:"M" }}</label>
             </div>
-            <a href="#">
+            <a href="{% url 'post_detail' post.id %}">
                 <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
             </a>
         </div>
         <div class="blog-info">
-            <h5><a href="#">{{ post.title|title }}</a></h5>
+            <h5><a href="{% url 'post_detail' post.id %}">{{ post.title|title }}</a></h5>
 
             <a href="{% url 'author_detail' post.author.id %}" style="color:#6c3483;font-size:17px;"><b>{{ post.author.name }}</b></a>
             
