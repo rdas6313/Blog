@@ -20,10 +20,10 @@
                     <ul class="pagination justify-content-center">
                         {% if posts.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ posts.previous_page_number }}" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
+                                <a class="page-link" href="" id="{{ posts.previous_page_number }}{{ posts.previous_page_number }}" onclick="change_page({{ posts.previous_page_number }},{{ posts.previous_page_number }}{{ posts.previous_page_number }})" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ posts.previous_page_number }}">{{ posts.previous_page_number }}</a>
+                                <a class="page-link" href="" id="{{ posts.previous_page_number }}" onclick="change_page({{ posts.previous_page_number }},{{ posts.previous_page_number }})">{{ posts.previous_page_number }}</a>
                             </li>
                         {% else %}
                             <li class="page-item disabled">
@@ -32,17 +32,17 @@
                         {% endif %}
                         
                         <li class="page-item active">
-                            <a class="page-link" href="?page={{ posts.number }}"> {{ posts.number }} <span class="sr-only">(current)</span></a>
+                            <a class="page-link" href="" id="{{ posts.number }}" onclick="change_page({{ posts.number }},{{ posts.number }})"> {{ posts.number }} <span class="sr-only">(current)</span></a>
                         </li>
                         
 
                         {% if posts.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ posts.next_page_number }}">{{ posts.next_page_number }}</a>
+                                <a class="page-link" href="" id="{{ posts.next_page_number }}" onclick="change_page({{ posts.next_page_number }},{{ posts.next_page_number }})" >{{ posts.next_page_number }}</a>
                             </li>
 
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ posts.next_page_number }}">
+                                <a class="page-link" href="" id="{{ posts.next_page_number }}{{ posts.next_page_number }}" onclick="change_page({{ posts.next_page_number }},{{ posts.next_page_number }}{{ posts.next_page_number }})">
                                     <i class="fas fa-chevron-right"></i>
                                 </a>
                             </li>
