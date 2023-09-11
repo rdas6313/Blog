@@ -69,5 +69,15 @@ def author_detail(request, id):
     return render(request, 'blog_app/blog_author_detail.html', context)
 
 
-def detail(request, id):
-    return render(request, 'blog_app/blog_post_detail.html')
+def post_detail(request, id):
+    post_queryset = Post.objects.select_related(
+        'author')
+    post = get_object_or_404(post_queryset, pk=id)
+    author = post.author
+    latest_posts = post_queryset[:6]
+    context = {
+        'post': post,
+        'author': author,
+        'latest_post': latest_posts
+    }
+    return render(request, 'blog_app/blog_post_detail.html', context)
