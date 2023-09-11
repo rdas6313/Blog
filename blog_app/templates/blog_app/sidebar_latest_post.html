@@ -12,7 +12,7 @@
                         <h5><a href="{% url 'post_detail' post.id %}">{{ post.title|title }}</a></h5>
                     </div>
                     <div class="lpa-meta">
-                        <a class="name" href="#">
+                        <a class="name" href="{% url 'author_detail' post.author.id %}">
                            {{ post.author.name }}
                         </a>
                         <a class="date">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="lpa-right">
-                    <a href="#">
+                    <a href="{% url 'post_detail' post.id %}">
                         <img src="https://www.bootdey.com/image/400x200/E6E6FA/000000" title alt>
                     </a>
                 </div>
