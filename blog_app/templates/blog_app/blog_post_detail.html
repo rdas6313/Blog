@@ -82,8 +82,16 @@
             </div>
         </form>
     </div>
+    <div class="comment">
+        {% if not cookie_alert %}
+            {% for comment in post.comment_set.all %}
+                {% include 'blog_app/comment.html' %}
+            {% endfor %}
+        {% else %}
+            <p style="text-align:center"><b>{{ cookie_alert }}</b></p>
+        {% endif %}
+    </div>
 </div>
-
 
 {% endblock %}
 

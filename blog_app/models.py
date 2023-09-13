@@ -33,6 +33,8 @@ class Comment(models.Model):
     commented_on = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    like = models.PositiveIntegerField(default=0)
+    dislike = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.name} {self.email} {self.commented_on}"
