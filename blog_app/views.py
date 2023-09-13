@@ -149,10 +149,12 @@ def post_detail(request, id):
     post = get_object_or_404(post_queryset, pk=id)
     author = post.author
     latest_posts = post_queryset[:6]
+    comment_set = post.comment_set.order_by('-commented_on')
     context = {
         'post': post,
         'author': author,
         'latest_post': latest_posts,
-        'cookie_alert': cookie_alert
+        'cookie_alert': cookie_alert,
+        'comment_set': comment_set
     }
     return render(request, 'blog_app/blog_post_detail.html', context)

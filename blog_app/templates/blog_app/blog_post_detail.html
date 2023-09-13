@@ -84,7 +84,7 @@
     </div>
     <div class="comment">
         {% if not cookie_alert %}
-            {% for comment in post.comment_set.all %}
+            {% for comment in comment_set %}
                 {% include 'blog_app/comment.html' %}
             {% endfor %}
         {% else %}
