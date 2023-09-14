@@ -155,6 +155,7 @@ def post_detail(request, id):
         'author': author,
         'latest_post': latest_posts,
         'cookie_alert': cookie_alert,
-        'comment_set': comment_set
+        'comment_set': comment_set,
+        'session': request.session
     }
     return render(request, 'blog_app/blog_post_detail.html', context)

@@ -12,14 +12,23 @@
 			<li class="list-inline-item g-mr-20">
 				<a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover"
 					href="?comment={{ comment.id }}&like=true">
-					<i class="fa fa-thumbs-up g-pos-rel g-top-1 g-mr-3"></i>
+					{% if like is True %}
+						<i class="fas fa-thumbs-up g-pos-rel g-top-1 g-mr-3"></i>
+					{% elif like is None or like is False %}
+						<i class="far fa-thumbs-up g-pos-rel g-top-1 g-mr-3"></i>
+					{% endif %}
 					{{ comment.like }}
 				</a>
 			</li>
 			<li class="list-inline-item g-mr-20">
 				<a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover"
 					href="?comment={{ comment.id }}&like=false">
-					<i class="fa fa-thumbs-down g-pos-rel g-top-1 g-mr-3"></i>
+					
+					{% if like is False %}
+						<i class="fas fa-thumbs-down g-pos-rel g-top-1 g-mr-3"></i>
+					{% elif like is True or like is None %}
+						<i class="far fa-thumbs-down g-pos-rel g-top-1 g-mr-3"></i>
+					{% endif %}
 					{{ comment.dislike }}
 				</a>
 			</li>

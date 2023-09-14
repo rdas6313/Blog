@@ -84,9 +84,13 @@
     </div>
     <div class="comment">
         {% if not cookie_alert %}
+           {% load blog_app_extras %}
             {% for comment in comment_set %}
-                {% include 'blog_app/comment.html' %}
+                {% with session|get_like:comment.id as like %}
+                    {% include 'blog_app/comment.html' %}
+                {% endwith %}
             {% endfor %}
+            
         {% else %}
             <p style="text-align:center"><b>{{ cookie_alert }}</b></p>
         {% endif %}
