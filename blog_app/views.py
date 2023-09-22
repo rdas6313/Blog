@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from .models import Post, Tag, Author, Comment
 from django.db.models import Count, Prefetch, F
+from .forms import CommentForm
 # Create your views here.
 
 
@@ -140,6 +141,13 @@ def on_cookie_enabled(request, comment_id, like):
 
 def post_detail(request, id):
 
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CommentForm()
+
     comment_id = request.GET.get('comment', None)
     like = request.GET.get('like', None)
     cookie_alert = session_handle(request, comment_id, like, on_cookie_enabled)
@@ -156,6 +164,7 @@ def post_detail(request, id):
         'latest_post': latest_posts,
         'cookie_alert': cookie_alert,
         'comment_set': comment_set,
-        'session': request.session
+        'session': request.session,
+        'form': form
     }
     return render(request, 'blog_app/blog_post_detail.html', context)

@@ -58,3 +58,9 @@ body {
 .single-comment {
     margin-top: 10px;
 }
+
+.errorlist {
+    color: red;
+    padding: 10px;
+
+}

@@ -56,22 +56,28 @@
 
     <div class="contact-form article-comment">
         <h4>Leave a Reply</h4>
-        <form id="contact-form" method="POST">
+        {{ form.non_field_errors }}
+        <form id="contact-form" method="POST" action="{% url 'post_detail' post.id %}">
+            {% csrf_token %}
+            <input type="hidden" name="post" value="{{ post.id }}"/>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input name="Name" id="name" placeholder="Name *" class="form-control" type="text">
+                        <input name="name" id="name" placeholder="Name *" class="form-control" type="text">
+                        {{ form.name.errors }}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input name="Email" id="email" placeholder="Email *" class="form-control" type="email">
+                        <input name="email" id="email" placeholder="Email *" class="form-control" type="email">
+                        {{ form.email.errors }}
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <textarea name="message" id="message" placeholder="Your message *" rows="4"
                             class="form-control"></textarea>
+                        {{ form.message.errors }}
                     </div>
                 </div>
                 <div class="col-md-12">
