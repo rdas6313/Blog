@@ -13,7 +13,8 @@ from django.urls import reverse
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     """ It is responsible for Post admin """
-    list_display = ['title', 'date', 'author', 'comment_count', 'tag_count']
+    list_display = ['title', 'date', 'author_name',
+                    'comment_count', 'tag_count']
     list_per_page = 10
     ordering = ['-date', 'title']
     exclude = ['picture']
@@ -24,6 +25,11 @@ class PostAdmin(admin.ModelAdmin):
     def comment_count(self, post):
         """ Calculating comment count on this post """
         return post.comment_count
+
+    @admin.display(description='author name')
+    def author_name(self, post):
+        """ Providing author name """
+        return post.author.name
 
     @admin.display(description='Total tags', ordering='tag_count')
     def tag_count(self, post):
@@ -37,7 +43,7 @@ class PostAdmin(admin.ModelAdmin):
         return html
 
     def get_queryset(self, request):
-        return super().get_queryset(request).annotate(comment_count=Count('comment'), tag_count=Count('tag'))
+        return super().get_queryset(request).annotate(comment_count=Count('comment'), tag_count=Count('tag', distinct=True)).select_related('author')
 
 
 @admin.register(models.Author)
