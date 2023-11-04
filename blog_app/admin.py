@@ -113,3 +113,18 @@ class TagAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).annotate(post_count=Count('post'))
+
+
+@admin.register(models.Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['name', 'commented_on', 'post_name', 'like', 'dislike']
+    search_fields = ['name__istartswith',
+                     'commented_on', 'post__title__istartswith']
+    list_select_related = ['post']
+
+    readonly_fields = ['like', 'dislike']
+
+    def post_name(self, comment):
+        url = reverse('admin:blog_app_post_change', args=(comment.post.id,))
+        html = format_html('<a href="{}">{}</a>', url, comment.post.title)
+        return html
