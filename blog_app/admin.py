@@ -10,6 +10,18 @@ from django.urls import reverse
 # Register your models here.
 
 
+class TagInline(admin.TabularInline):
+    model = models.Tag.post.through
+    extra = 0
+
+
+class PostInline(admin.TabularInline):
+    model = models.Post
+    extra = 0
+    max_num = 3
+    min_num = 1
+
+
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     """ It is responsible for Post admin """
@@ -17,9 +29,11 @@ class PostAdmin(admin.ModelAdmin):
                     'comment_count', 'tag_count']
     list_per_page = 10
     ordering = ['-date', 'title']
-    exclude = ['picture']
     search_fields = ['title__istartswith', 'author__name__istartswith']
     list_filter = ['date', 'tag']
+    readonly_fields = ['date']
+    autocomplete_fields = ['author']
+    inlines = [TagInline]
 
     @admin.display(description='Total Comments', ordering='comment_count')
     def comment_count(self, post):
@@ -53,8 +67,9 @@ class AuthorAdmin(admin.ModelAdmin):
     list_per_page = 10
     list_filter = ['joined_on']
     ordering = ['-joined_on']
-    exclude = ['picture']
     search_fields = ['name__istartswith']
+    actions = ['delete_posts']
+    readonly_fields = ['joined_on']
 
     @admin.display(description='Total posts', ordering='post_count')
     def published(self, author):
@@ -70,12 +85,26 @@ class AuthorAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         return super().get_queryset(request).annotate(post_count=Count('post'))
 
+    @admin.action(description='Delete posts from seleted authors')
+    def delete_posts(self, request, queryset):
+        author_queryset = queryset.prefetch_related('post_set')
+        count = 0
+        for author in author_queryset:
+            ret = author.post_set.all().delete()
+            if ret[0] > 0:
+                count += 1
+        self.message_user(
+            request,
+            f"{count} author posts were successfully deleted"
+        )
+
 
 @admin.register(models.Tag)
 class TagAdmin(admin.ModelAdmin):
     """ It is responsible for Tag admin """
     list_display = ['label', 'post_count']
     search_fields = ['label__istartswith']
+    exclude = ['post']
 
     @admin.display(description='Total posts', ordering='post_count')
     def post_count(self, tag):

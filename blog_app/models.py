@@ -1,16 +1,17 @@
 from django.db import models
+from django.core.validators import MaxLengthValidator
 
 
 class Author(models.Model):
     """ Author model holds information about a author """
 
     name = models.CharField(max_length=255)
-    about = models.TextField()
+    about = models.TextField(validators=[MaxLengthValidator(500)])
     joined_on = models.DateField(auto_now_add=True)
-    picture = models.ImageField(null=True)
+    picture = models.ImageField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} {self.joined_on}"
+        return f"{self.name}"
 
 
 class Post(models.Model):
@@ -20,10 +21,10 @@ class Post(models.Model):
     date = models.DateField(auto_now=True)
     detail = models.TextField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    picture = models.ImageField(null=True)
+    picture = models.ImageField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} {self.date} {self.author}"
+        return f"{self.title}"
 
 
 class Comment(models.Model):
@@ -43,7 +44,7 @@ class Comment(models.Model):
 class Tag(models.Model):
     """ Tag model holds information about tags """
     label = models.CharField(max_length=255, unique=True)
-    post = models.ManyToManyField(Post)
+    post = models.ManyToManyField(Post, blank=True)
 
     def __str__(self):
         return f"{self.label}"
