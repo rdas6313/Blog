@@ -22,6 +22,13 @@ class PostInline(admin.TabularInline):
     min_num = 1
 
 
+class CommentInline(admin.TabularInline):
+    model = models.Comment
+    extra = 0
+    readonly_fields = [
+        'like', 'dislike', 'commented_on']
+
+
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
     """ It is responsible for Post admin """
@@ -33,7 +40,7 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['date', 'tag']
     readonly_fields = ['date']
     autocomplete_fields = ['author']
-    inlines = [TagInline]
+    inlines = [TagInline, CommentInline]
 
     @admin.display(description='Total Comments', ordering='comment_count')
     def comment_count(self, post):
