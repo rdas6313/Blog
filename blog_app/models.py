@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxLengthValidator
+from django.contrib.auth.models import User
 
 
 class Author(models.Model):
@@ -9,6 +10,7 @@ class Author(models.Model):
     about = models.TextField(validators=[MaxLengthValidator(500)])
     joined_on = models.DateField(auto_now_add=True)
     picture = models.ImageField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.name}"

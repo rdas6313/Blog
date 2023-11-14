@@ -64,7 +64,11 @@ class PostAdmin(admin.ModelAdmin):
         return html
 
     def get_queryset(self, request):
-        return super().get_queryset(request).annotate(comment_count=Count('comment'), tag_count=Count('tag', distinct=True)).select_related('author')
+        qs = super().get_queryset(request).annotate(comment_count=Count('comment'),
+                                                    tag_count=Count('tag', distinct=True)).select_related('author')
+        if request.user.is_staff and not request.user.is_superuser:
+            return qs.filter(author__user=request.user)
+        return qs
 
 
 @admin.register(models.Author)
@@ -77,6 +81,7 @@ class AuthorAdmin(admin.ModelAdmin):
     search_fields = ['name__istartswith']
     actions = ['delete_posts']
     readonly_fields = ['joined_on']
+    exclude = ['user']
 
     @admin.display(description='Total posts', ordering='post_count')
     def published(self, author):
@@ -90,7 +95,10 @@ class AuthorAdmin(admin.ModelAdmin):
         return html
 
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        return super().get_queryset(request).annotate(post_count=Count('post'))
+        qs = super().get_queryset(request).annotate(post_count=Count('post'))
+        if request.user.is_staff and not request.user.is_superuser:
+            return qs.filter(user=request.user)
+        return qs
 
     @admin.action(description='Delete posts from seleted authors')
     def delete_posts(self, request, queryset):
@@ -135,3 +143,8 @@ class CommentAdmin(admin.ModelAdmin):
         url = reverse('admin:blog_app_post_change', args=(comment.post.id,))
         html = format_html('<a href="{}">{}</a>', url, comment.post.title)
         return html
+
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+        if request.user.is_staff and not request.user.is_superuser:
+            return super().get_queryset(request).filter(post__author__user=request.user)
+        return super().get_queryset(request)
