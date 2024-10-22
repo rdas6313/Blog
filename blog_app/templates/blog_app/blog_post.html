@@ -6,7 +6,9 @@
                 <label>{{ post.date|date:"M" }}</label>
             </div>
             <a href="{% url 'post_detail' post.id %}">
-                <img src="https://www.bootdey.com/image/400x200/FFB6C1/000000" title alt>
+            <img src="{% if post.picture %} {{post.picture.url}} {% else %} https://www.bootdey.com/image/400x200/FFB6C1/000000  {% endif %}" title alt>
+               
+                
             </a>
         </div>
         <div class="blog-info">

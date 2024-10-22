@@ -5,7 +5,7 @@
 <div class="col-lg-8 m-15px-tb">
     <article class="article">
         <div class="article-img">
-            <img src="https://www.bootdey.com/image/800x350/87CEFA/000000" title alt>
+            <img src="{% if post.picture %} {{post.picture.url}} {% else %} https://www.bootdey.com/image/800x350/87CEFA/000000 {% endif %}" title alt>
         </div>
         <div class="article-title">
             <h2>{{post.title|title}}</h2>

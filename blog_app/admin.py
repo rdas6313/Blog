@@ -33,7 +33,7 @@ class CommentInline(admin.TabularInline):
 class PostAdmin(admin.ModelAdmin):
     """ It is responsible for Post admin """
     list_display = ['title', 'date', 'author_name',
-                    'comment_count', 'tag_count']
+                    'comment_count', 'tag_count',]
     list_per_page = 10
     ordering = ['-date', 'title']
     search_fields = ['title__istartswith', 'author__name__istartswith']

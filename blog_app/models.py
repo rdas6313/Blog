@@ -16,6 +16,11 @@ class Author(models.Model):
         return f"{self.name}"
 
 
+def get_image_directory_path(instance, filename):
+    """ return image upload directory """
+    return f"user_{instance.author.user.id}/{filename}"
+
+
 class Post(models.Model):
     """ Post model holds information about a post which is created by a author """
 
@@ -23,7 +28,8 @@ class Post(models.Model):
     date = models.DateField(auto_now=True)
     detail = models.TextField()
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    picture = models.ImageField(null=True, blank=True)
+    picture = models.ImageField(
+        null=True, blank=True, upload_to=get_image_directory_path)
 
     def __str__(self):
         return f"{self.title}"
