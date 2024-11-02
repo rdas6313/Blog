@@ -28,10 +28,14 @@ function tag_click(id) {
     change(map, 'list_params[]', id + '', multi_values);
     change(map, 'page', '1', multi_values);
     const url = generate_url(map);
-    if (url.length == 0)
-        document.getElementById(id).href = '?';
-    else
-        document.getElementById(id).href = url;
+
+    setTimeout(() => {
+        if (url.length === 0) {
+            window.location.href = '?';
+        } else {
+            window.location.href = url;
+        }
+    }, 10);  // 10 milliseconds delay
 
 
     return false;
